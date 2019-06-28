@@ -22,7 +22,7 @@ app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['GET', 'O
 logger = logging.getLogger('fastapi')
 
 
-REDIS_POOL = redis.ConnectionPool(host='localhost', port=6379, db=0)
+REDIS_POOL = redis.ConnectionPool(host='differ-redis', port=6379, db=0)
 REDIS = redis.Redis(connection_pool=REDIS_POOL)
 
 class DiffInfo(BaseModel):

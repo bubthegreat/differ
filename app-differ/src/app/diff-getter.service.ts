@@ -20,7 +20,7 @@ const httpOptions = {
 })
 export class DiffGetterService {
 
-  private apiUrl = 'http://localhost:8000';
+  private apiUrl = 'http://api.differ.localhost';
 
   constructor(private http: HttpClient) { }
 

@@ -1,46 +1,50 @@
 version: "3.7"
 services:
   # API server that the jiranator-app will use for async requests to jira
-  # differ-api:
-  #   image: differ-api
-  #   hostname: differ-api
-  #   build:
-  #     context: api-differ/
-  #     dockerfile: Dockerfile
-  #   deploy:
-  #     replicas: 3
-  #     update_config:
-  #       parallelism: 1
-  #       delay: 5s
-  #     restart_policy:
-  #       condition: on-failure
-  #   labels:
-  #     - "traefik.frontend.rule=Host:api.differ.localhost"
-  #   ports:
-  #     - 8000:8000
+  differ-api:
+    image: differ-api
+    hostname: differ-api
+    build:
+      context: api-differ/
+      dockerfile: Dockerfile
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+    labels:
+      - "traefik.frontend.rule=Host:api.differ.localhost"
+    networks:
+      - differ-backend
+    ports:
+      - 8000
 
   # Application service for the frontend that users will interact with
-  # differ-app:
-  #   image: differ-app
-  #   hostname: differ-app
-  #   build:
-  #     context: app-differ/
-  #     dockerfile: Dockerfile
-  #   deploy:
-  #     replicas: 3
-  #     update_config:
-  #       parallelism: 1
-  #       delay: 5s
-  #     restart_policy:
-  #       condition: on-failure
-  #   labels:
-  #     - "traefik.frontend.rule=Host:app.differ.localhost"
-  #   ports:
-  #     - 4200:4200
-  #   depends_on:
-  #     - differ-api
-  #     - differ-redis
-  #     - reverse-proxy
+  differ-app:
+    image: differ-app
+    hostname: differ-app
+    build:
+      context: app-differ/
+      dockerfile: Dockerfile
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+    labels:
+      - "traefik.frontend.rule=Host:app.differ.localhost"
+    ports:
+      - 4200
+    networks:
+      - differ-backend
+    depends_on:
+      - differ-api
+      - differ-redis
+      - reverse-proxy
 
   # Database for the application and backend to save to.
   differ-redis:
@@ -51,23 +55,30 @@ services:
           restart_policy:
               condition: on-failure
       ports:
-          - 6379:6379
+          - 6379
       volumes:
           - differ-db-vol:/data
+      networks:
+        - differ-backend
 
-  # reverse-proxy:
-  #   image: traefik # The official Traefik docker image
-  #   command: --api --docker # Enables the web UI and tells Traefik to listen to docker
-  #   ports:
-  #     - "80:80"     # The HTTP port
-  #     - "8080:8080" # The Web UI (enabled by --api)
-  #     - "443:443"
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock 
+  reverse-proxy:
+    image: traefik # The official Traefik docker image
+    command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+    ports:
+      - "80:80"     # The HTTP port
+      - "8080:8080" # The Web UI (enabled by --api)
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+    networks:
+      - differ-backend
+      - web
 
 networks:
   web:
     external: true
+  differ-backend:
+    driver: overlay
 
 volumes:
   differ-db-vol:
