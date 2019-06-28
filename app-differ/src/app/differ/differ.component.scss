@@ -1,0 +1,11 @@
+:host {
+  textarea {
+    width: 100%;
+    height: calc(100% - 70px);
+  }
+  
+  mat-card {
+    width: 100%;
+    height: calc(100% - 70px);
+  }
+}
