@@ -1,8 +1,8 @@
-version: "3.4"
+version: "3.7"
 services:
   # API server that the jiranator-app will use for async requests to jira
   differ-api:
-    image: bubthegreat/differ-api
+    image: differ-api
     hostname: differ-api
     build:
       context: api-differ/
@@ -14,6 +14,8 @@ services:
         delay: 5s
       restart_policy:
         condition: on-failure
+    labels:
+      - "traefik.frontend.rule=Host:api.differ.localhost"
     networks:
       - differ-backend
     ports:
@@ -21,7 +23,7 @@ services:
 
   # Application service for the frontend that users will interact with
   differ-app:
-    image: bubthegreat/differ-app
+    image: differ-app
     hostname: differ-app
     build:
       context: app-differ/
@@ -33,20 +35,16 @@ services:
         delay: 5s
       restart_policy:
         condition: on-failure
-      labels:
-        - traefik.frontend.rule=Host:differ.bubtaylor.com
-        - traefik.enable=true
-        - traefik.port=80
-        - traefik.tags=traefik-public
-        - traefik.docker.network=traefik-public
-        - traefik.redirectorservice.frontend.entryPoints=http
-        - traefik.redirectorservice.frontend.redirect.entryPoint=https
-        # Traefik service that listens to HTTPS
-        - traefik.webservice.frontend.entryPoints=https
+    labels:
+      - "traefik.frontend.rule=Host:app.differ.localhost"
     ports:
-      - 80
+      - 4200
     networks:
       - differ-backend
+    depends_on:
+      - differ-api
+      - differ-redis
+      - reverse-proxy
 
   # Database for the application and backend to save to.
   differ-redis:
@@ -63,8 +61,21 @@ services:
       networks:
         - differ-backend
 
+  reverse-proxy:
+    image: traefik # The official Traefik docker image
+    command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+    ports:
+      - "80:80"     # The HTTP port
+      - "8080:8080" # The Web UI (enabled by --api)
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+    networks:
+      - differ-backend
+      - web
+
 networks:
-  traefik-public:
+  web:
     external: true
   differ-backend:
     driver: overlay
