@@ -47,7 +47,7 @@ services:
       labels:
         - traefik.frontend.rule=Host:differ.bubtaylor.com
         - traefik.enable=true
-        - traefik.port=4200
+        - traefik.port=80
         - traefik.tags=traefik-public
         - traefik.docker.network=traefik-public
         - traefik.redirectorservice.frontend.entryPoints=http
@@ -58,7 +58,7 @@ services:
       - differ-backend
       - traefik-public
     ports:
-      - "4200"
+      - "80"
 
   # Database for the application and backend to save to.
   differ-redis:
