@@ -43,10 +43,10 @@ services:
         - traefik.redirectorservice.frontend.redirect.entryPoint=https
         # Traefik service that listens to HTTPS
         - traefik.webservice.frontend.entryPoints=https
-    ports:
-      - 80
     networks:
       - differ-backend
+    ports:
+      - 80
 
   # Database for the application and backend to save to.
   differ-redis:
