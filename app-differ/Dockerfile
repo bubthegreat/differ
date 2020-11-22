@@ -1,10 +1,11 @@
 FROM node as app-differ-builder
 
 WORKDIR /app-differ
-ENV PATH /app-differ/node_modules/.bin:$PATH
-COPY package.json /app-differ/package.json
-RUN npm install
+# ENV PATH /app-differ/node_modules/.bin:$PATH
+# COPY package.json /app-differ/package.json
+# RUN npm install
 RUN npm install -g @angular/cli
+RUN npm install @angular-devkit/build-angular
 
 COPY . .
 

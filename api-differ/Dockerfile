@@ -1,4 +1,4 @@
-FROM python:3.6.8
+FROM python:3.8-buster
 
 RUN pip install fastapi
 RUN pip install jira

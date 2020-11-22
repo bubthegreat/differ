@@ -17,9 +17,9 @@ import { environment } from '../../environments/environment';
 })
 export class DifferComponent implements OnInit {
 
-  diffForm: FormGroup;
-  formSubscription: Subscription;
-  diffId: string;
+  diffForm: FormGroup = new FormGroup({});
+  formSubscription = new Subscription();
+  diffId = '';
   left = '';
   right = '';
 
@@ -29,7 +29,7 @@ export class DifferComponent implements OnInit {
     private diffGetter: DiffGetterService,
     ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     console.log(environment);
     // Initialize our form controls.
 
@@ -49,20 +49,22 @@ export class DifferComponent implements OnInit {
     // If we have a diff ID, go get it.
     if (this.route.snapshot.paramMap.get('id')) {
       console.log('Got here');
-      this.diffId = this.route.snapshot.paramMap.get('id');
+      this.diffId = this.route.snapshot.paramMap.get('id') || '';
       console.log('Attempting to get info for ', this.diffId);
       this.diffGetter.getId(this.diffId)
         .subscribe( result => {
           console.log('result is ', result);
           const jsonVal = JSON.parse(result);
-          this.diffForm.controls.left.setValue(jsonVal['left']);
-          this.diffForm.controls.right.setValue(jsonVal['right']);
+          const lKey = 'left';
+          const rKey = 'right';
+          this.diffForm.controls.left.setValue(jsonVal[lKey]);
+          this.diffForm.controls.right.setValue(jsonVal[rKey]);
         });
     }
 
   }
 
-  setDiff() {
+  setDiff(): void {
     console.log('Setting the diffs!');
     console.log(this.diffForm);
     this.diffGetter.setId(this.diffForm)

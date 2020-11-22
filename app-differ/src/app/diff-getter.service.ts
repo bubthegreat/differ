@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
@@ -21,8 +21,6 @@ const httpOptions = {
 })
 export class DiffGetterService {
 
-  apiUrl: string;
-
   constructor(private http: HttpClient) { }
 
 
@@ -33,14 +31,14 @@ export class DiffGetterService {
     // return {id: 1, left: leftText, right: rightText};
   }
 
-  setId(formResult) {
+  setId(formResult: any): Observable<any> {
     const urlString = this.getEnvUrl() + '/new-diff/';
-    console.log("setID urlString: " + urlString);
+    console.log('setID urlString: ' + urlString);
     const diffId = this.http.post(urlString, formResult.value, httpOptions);
     return diffId;
   }
 
-  getEnvUrl() {
+  getEnvUrl(): string {
     let urlBase;
     if (environment.production === true) {
       urlBase = 'http://differ.bubtaylor.com/api/';
