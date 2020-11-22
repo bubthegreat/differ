@@ -17,7 +17,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
 
-app = FastAPI()
+app = FastAPI(root_path="/api")
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['GET', 'OPTIONS', 'POST'], allow_headers=['*'])
 logger = logging.getLogger('fastapi')
 
