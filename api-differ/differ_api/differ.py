@@ -4,6 +4,7 @@ import asyncio
 import codecs
 import hashlib
 import logging
+import os
 
 import json
 import uvicorn
@@ -17,12 +18,15 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
 
+DIFFER_HOST = os.environ.get("DIFFER_ENV", 'localhost')
+
+
 app = FastAPI(root_path="/api")
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['GET', 'OPTIONS', 'POST'], allow_headers=['*'])
 logger = logging.getLogger('fastapi')
 
 
-REDIS_POOL = redis.ConnectionPool(host='differ-redis', port=6379, db=0)
+REDIS_POOL = redis.ConnectionPool(host=DIFFER_HOST, port=6379, db=0)
 REDIS = redis.Redis(connection_pool=REDIS_POOL)
 
 class DiffInfo(BaseModel):

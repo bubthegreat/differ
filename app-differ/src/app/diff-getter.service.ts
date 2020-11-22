@@ -21,25 +21,35 @@ const httpOptions = {
 })
 export class DiffGetterService {
 
-  private apiUrl = 'https://differ-api';
+  apiUrl: string;
 
   constructor(private http: HttpClient) { }
 
-  onInit() {
-    console.log(environment);
-  }
 
   getId(diffId: string): Observable<any> {
-    const urlString = this.apiUrl + '/diffs/' + diffId;
+    const urlString = this.getEnvUrl() + '/diffs/' + diffId;
     const diffInfo = this.http.get<Diff>(urlString);
     return diffInfo;
     // return {id: 1, left: leftText, right: rightText};
   }
 
   setId(formResult) {
-    const urlString = this.apiUrl + '/new-diff/';
+    const urlString = this.getEnvUrl() + '/new-diff/';
+    console.log("setID urlString: " + urlString);
     const diffId = this.http.post(urlString, formResult.value, httpOptions);
     return diffId;
+  }
+
+  getEnvUrl() {
+    let urlBase;
+    if (environment.production === true) {
+      urlBase = 'http://differ.bubtaylor.com/api/';
+    }
+    else {
+      urlBase = 'http://localhost/api/';
+    }
+    console.log('Got API url.' + urlBase);
+    return urlBase;
   }
 }
 

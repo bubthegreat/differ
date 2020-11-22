@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DiffGetterService } from '../diff-getter.service';
+import { environment } from '../../environments/environment';
+
 
 
 
@@ -28,7 +30,9 @@ export class DifferComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    console.log(environment);
     // Initialize our form controls.
+
     this.diffForm = this.formBuilder.group({
       left:  ['', Validators.required],
       right:  ['', Validators.required],
@@ -44,7 +48,7 @@ export class DifferComponent implements OnInit {
 
     // If we have a diff ID, go get it.
     if (this.route.snapshot.paramMap.get('id')) {
-      console.log('Got here')
+      console.log('Got here');
       this.diffId = this.route.snapshot.paramMap.get('id');
       console.log('Attempting to get info for ', this.diffId);
       this.diffGetter.getId(this.diffId)
@@ -59,7 +63,7 @@ export class DifferComponent implements OnInit {
   }
 
   setDiff() {
-    console.log('Setting the diffs!')
+    console.log('Setting the diffs!');
     console.log(this.diffForm);
     this.diffGetter.setId(this.diffForm)
       .subscribe( diffId => {
