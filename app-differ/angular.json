@@ -29,6 +29,14 @@
             "scripts": []
           },
           "configurations": {
+            "local": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -53,6 +61,7 @@
                 }
               ]
             }
+
           }
         },
         "serve": {
@@ -63,6 +72,9 @@
           "configurations": {
             "production": {
               "browserTarget": "differ:build:production"
+            },
+            "local": {
+              "browserTarget": "differ:build:local"
             }
           }
         },
@@ -111,6 +123,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "differ:serve:production"
+            },
+            "local": {
+              "devServerTarget": "differ:serve:local"
             }
           }
         }

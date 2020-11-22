@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { HttpHeaders } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 interface Diff {
   left: string;
@@ -23,6 +24,10 @@ export class DiffGetterService {
   private apiUrl = 'https://differ-api';
 
   constructor(private http: HttpClient) { }
+
+  onInit() {
+    console.log(environment);
+  }
 
   getId(diffId: string): Observable<any> {
     const urlString = this.apiUrl + '/diffs/' + diffId;
