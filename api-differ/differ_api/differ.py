@@ -18,7 +18,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
 
-DIFFER_HOST = os.environ.get("DIFFER_ENV", 'localhost')
+DIFFER_HOST = os.environ.get("DIFFER_ENV", 'differ-redis')
 
 
 app = FastAPI(root_path="/api")
