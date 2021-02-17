@@ -1,24 +1,48 @@
-FROM node as app-differ-builder
+#############
+### build ###
+#############
+# base image
+FROM node:14.15.4 as build
 
-WORKDIR /app-differ
+# install chrome for protractor tests
+# RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+# RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+# RUN apt-get update && apt-get install -yq google-chrome-stable
+
+# set working directory
+WORKDIR /app
+
+# add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json .
+COPY package.json /app/package.json
 RUN npm install
+RUN npm install -g @angular/cli@11.0.7
 
-# COPY package.json /app-differ/package.json
-RUN npm install -g @angular/cli
-RUN npm install @angular-devkit/build-angular
+# add app
+COPY . /app
 
-COPY . .
+# run tests
+# RUN ng test --watch=false
+# RUN ng e2e --port 4202
 
-RUN ng build --prod
+# generate build
+RUN ng build --output-path=dist
 
-FROM nginx:1.19.3-alpine
+############
+### prod ###
+############
 
-# From ‘builder’ stage copy over the artifacts in dist folder to default nginx public folder
-COPY --from=app-differ-builder /app-differ/dist/app-differ /usr/share/nginx/html
+# base image
+FROM nginx:1.16.0-alpine
 
+# copy artifact build from the 'build environment'
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+# expose port 80
 EXPOSE 80
+
+# run nginx
 CMD ["nginx", "-g", "daemon off;"]

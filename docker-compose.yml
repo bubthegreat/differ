@@ -1,16 +1,75 @@
-version: "3.4"
+version: "3.7"
+
 services:
-  # API server that the jiranator-app will use for async requests to jira
+
+  traefik:
+    image: "traefik:v2.4"
+    container_name: "traefik"
+    command:
+      # - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
   differ-api:
     image: bubthegreat/differ-api
-    hostname: differ-api
     build:
       context: api-differ/
       dockerfile: Dockerfile
-  # Application service for the frontend that users will interact with
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hermes.entrypoints=web"
+      - "traefik.http.routers.hermes.rule=Host(`localhost`) && PathPrefix(`/api{regex:$$|/.*}`)"
+      - "traefik.http.routers.hermes.middlewares=hermes-stripprefix"
+      - "traefik.http.middlewares.hermes-stripprefix.stripprefix.prefixes=/api"
+      - "traefik.port=8000"
+
   differ-app:
     image: bubthegreat/differ-app
-    hostname: differ-app
     build:
       context: app-differ/
       dockerfile: Dockerfile
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.artemis.entrypoints=web"
+      - "traefik.http.routers.artemis.rule=Host(`localhost`)"
+      - "traefik.http.routers.artemis.middlewares=artemis-stripprefix"
+      - "traefik.http.routers.artemis.middlewares=artemis-autodetect"
+      - "traefik.http.middlewares.artemis-stripprefix.stripprefix.prefixes=/"
+      - "traefik.http.middlewares.artemis-autodetect.contenttype.autodetect=false"
+      - "traefik.port=80"
+
+  differ-redis:
+    image: redis:alpine
+    ports:
+        - "6379"
+    volumes:
+        - differ-db-vol:/data
+
+
+volumes:
+  differ-db-vol:

@@ -41,10 +41,12 @@ export class DiffGetterService {
   getEnvUrl(): string {
     let urlBase;
     if (environment.production === true) {
-      urlBase = 'http://differ.bubtaylor.com/api/';
+      urlBase = 'http://differ.bubtaylor.com/api';
+      console.log("Getting production api url")
     }
     else {
-      urlBase = 'http://localhost/api/';
+      urlBase = 'http://localhost/api';
+      console.log("Getting local api url")
     }
     console.log('Got API url.' + urlBase);
     return urlBase;
