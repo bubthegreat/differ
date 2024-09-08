@@ -1,9 +1,5 @@
 allow_k8s_contexts('docker-desktop')
 
-# Define the namespace where everything will be deployed
-k8s_namespace('differ')
-k8s_yaml('local-k8s/common/namespace.yaml')
-
 # Load Kubernetes YAMLs for the Redis deployment and service
 k8s_yaml('local-k8s/infra/redis.yaml')
 

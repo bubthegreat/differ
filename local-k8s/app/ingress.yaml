@@ -3,9 +3,8 @@ kind: Ingress
 metadata:
   name: differ-app-ingress
   namespace: differ
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
   - host: differ.localhost
     http:
