@@ -1,17 +1,14 @@
 """Basic API for jiranator."""
 
-import asyncio
 import codecs
 import hashlib
 import logging
 import os
 
-import json
 import uvicorn
 import redis
 
 from fastapi import FastAPI
-from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 
 from starlette.middleware.cors import CORSMiddleware
@@ -54,7 +51,7 @@ async def post_diff(diff_info: DiffInfo):
 
 def main():
     """Run through uvicorn when run."""
-    uvicorn.run("differ_api:app", host='0.0.0.0', port=8000, reload=True)
+    uvicorn.run("differ_api.main:app", host='0.0.0.0', port=8000, reload=True)
 
 if __name__ == "__main__":
     main()

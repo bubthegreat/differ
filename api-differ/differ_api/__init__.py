@@ -1,1 +1,0 @@
-from differ_api.differ import app

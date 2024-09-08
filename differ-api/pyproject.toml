@@ -1,0 +1,16 @@
+[project]
+name = "differ-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+    "email-validator>=2.2.0",
+    "fastapi>=0.114.0",
+    "redis>=5.0.8",
+    "uvicorn>=0.30.6",
+]
+
+[project.scripts]
+differ_api = "differ_api.main:main" 

@@ -1,0 +1,21 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: differ-app
+  namespace: differ
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: differ-app
+  template:
+    metadata:
+      labels:
+        app: differ-app
+    spec:
+      containers:
+      - name: differ-app
+        image: differ-app:latest # Replace with your Angular app's image
+        ports:
+        - containerPort: 80
