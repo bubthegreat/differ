@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: redis-pvc
   namespace: differ # Change this if you use another namespace
+  annotations:
+    tilt.dev/down-policy: keep
 spec:
   accessModes:
     - ReadWriteOnce
@@ -15,6 +17,8 @@ kind: Deployment
 metadata:
   name: redis
   namespace: differ # Change this if you use another namespace
+  annotations:
+    tilt.dev/down-policy: keep
 spec:
   replicas: 1
   selector:
@@ -43,6 +47,8 @@ kind: Service
 metadata:
   name: redis-service
   namespace: differ # Change this if you use another namespace
+  annotations:
+    tilt.dev/down-policy: keep
 spec:
   selector:
     app: redis

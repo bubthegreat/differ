@@ -1,17 +1,22 @@
 allow_k8s_contexts('docker-desktop')
 
+# Define the namespace where everything will be deployed
+k8s_namespace('differ')
+k8s_yaml('local-k8s/common/namespace.yaml')
+
 # Load Kubernetes YAMLs for the Redis deployment and service
 k8s_yaml('local-k8s/infra/redis.yaml')
 
 # Load Kubernetes YAMLs for the Frontend
 k8s_yaml('local-k8s/api/deployment.yaml')
-k8s_yaml('local-k8s/api/ingress.yaml')
 k8s_yaml('local-k8s/api/service.yaml')
 
 # Load Kubernetes YAMLs for the backend
 k8s_yaml('local-k8s/app/deployment.yaml')
-k8s_yaml('local-k8s/app/ingress.yaml')
 k8s_yaml('local-k8s/app/service.yaml')
+
+# Load ingress after other stuff so it has active targets.
+k8s_yaml('local-k8s/common/ingress.yaml')
 
 # Define local Docker build for Frontend Angular app
 docker_build('differ-app', './differ-app/')

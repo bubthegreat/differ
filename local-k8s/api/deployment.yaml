@@ -11,10 +11,11 @@ spec:
   template:
     metadata:
       labels:
+        name: differ-api
         app: differ-api
     spec:
       containers:
-      - name: api
+      - name: differ-api
         image: differ-api:latest # Replace with your FastAPI app's image
         ports:
         - containerPort: 8000

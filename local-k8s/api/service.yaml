@@ -5,9 +5,8 @@ metadata:
   namespace: differ
 spec:
   selector:
-    app: backend
+    name: differ-api
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8000
-  type: ClusterIP
