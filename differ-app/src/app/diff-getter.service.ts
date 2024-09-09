@@ -45,7 +45,7 @@ export class DiffGetterService {
       console.log("Getting production api url")
     }
     else {
-      urlBase = 'http://localhost/api';
+      urlBase = 'http://differ.localhost/api';
       console.log("Getting local api url")
     }
     console.log('Got API url.' + urlBase);
