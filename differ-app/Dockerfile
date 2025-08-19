@@ -2,30 +2,21 @@
 ### build ###
 #############
 # base image
-FROM node:18-alpine as build
-
-# install chrome for protractor tests
-# RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-# RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-# RUN apt-get update && apt-get install -yq google-chrome-stable
+FROM node:16-alpine AS build
 
 # set working directory
 WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+ENV PATH="/app/node_modules/.bin:$PATH"
 
 # install and cache app dependencies
-COPY package.json /app/package.json
-RUN npm install
-RUN npm install -g @angular/cli@15
+COPY package.json package-lock.json /app/
+RUN npm ci --silent
+RUN npm install -g @angular/cli@11.0.7
 
 # add app
 COPY . /app
-
-# run tests
-# RUN ng test --watch=false
-# RUN ng e2e --port 4202
 
 # generate build for production
 RUN ng build --configuration=production --output-path=dist
