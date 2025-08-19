@@ -1,6 +1,6 @@
 - op: replace
   path: /spec/rules/0/host
-  value: skillmatrix.bubtaylor.com
+  value: differ.bubtaylor.com
 - op: add
   path: /metadata/annotations/cert-manager.io~1cluster-issuer
   value: letsencrypt-prod
@@ -8,5 +8,5 @@
   path: /spec/tls
   value:
     - hosts:
-      - skillmatrix.bubtaylor.com
+      - differ.bubtaylor.com
       secretName: differ-prod-tls
