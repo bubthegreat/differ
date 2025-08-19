@@ -3,10 +3,4 @@ kind: ConfigMap
 metadata:
   name: differ-api-config
 data:
-  DB_HOST: "mysql"
-  DB_PORT: "3306"
-  DB_USER: "skilluser"
-  DB_NAME: "skillmatrix"
-  BYPASS_AUTH: "false"
-  JWT_SECRET_KEY: "prod_secret_key_change_me"
-  CORS_ORIGINS: "https://skillmatrix.bubtaylor.com"
+  CORS_ORIGINS: "https://differ.bubtaylor.com"

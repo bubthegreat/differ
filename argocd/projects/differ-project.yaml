@@ -25,11 +25,15 @@ spec:
   - group: ''
     kind: Service
   - group: ''
+    kind: ServiceAccount
+  - group: ''
     kind: PersistentVolumeClaim
   - group: apps
     kind: Deployment
   - group: networking.k8s.io
     kind: Ingress
+  - group: networking.k8s.io
+    kind: NetworkPolicy
   - group: argoproj.io
     kind: Application
   roles:
