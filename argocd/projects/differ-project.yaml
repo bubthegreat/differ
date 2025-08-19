@@ -6,7 +6,7 @@ metadata:
 spec:
   description: Differ application project
   sourceRepos:
-  - 'git@gitlab.com:bubthegreat/differ.git'
+  - 'https://github.com/bubthegreat/differ.git'
   destinations:
   - namespace: differ-staging
     server: https://kubernetes.default.svc
