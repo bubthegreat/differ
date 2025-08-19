@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: differ
+  namespace: argocd
+spec:
+  description: Differ application project
+  sourceRepos:
+  - 'git@gitlab.com:bubthegreat/differ.git'
+  destinations:
+  - namespace: differ-staging
+    server: https://kubernetes.default.svc
+  - namespace: differ-prod
+    server: https://kubernetes.default.svc
+  - namespace: argocd
+    server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
+  namespaceResourceWhitelist:
+  - group: ''
+    kind: ConfigMap
+  - group: ''
+    kind: Secret
+  - group: ''
+    kind: Service
+  - group: ''
+    kind: PersistentVolumeClaim
+  - group: apps
+    kind: Deployment
+  - group: networking.k8s.io
+    kind: Ingress
+  - group: argoproj.io
+    kind: Application
+  roles:
+  - name: developer
+    description: Developer access to differ applications
+    policies:
+    - p, proj:differ:developer, applications, get, differ/*, allow
+    - p, proj:differ:developer, applications, sync, differ/*, allow
+    groups:
+    - differ-developers

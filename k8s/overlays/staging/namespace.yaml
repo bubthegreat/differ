@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: differ-staging
+  labels:
+    name: differ-staging
+    environment: staging

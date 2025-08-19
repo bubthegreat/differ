@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- skills-api-deployment.yaml
+- skills-api-service.yaml
+- skills-api-configmap.yaml
+- skills-ui-deployment.yaml
+- skills-ui-service.yaml
+- redis-deployment.yaml
+- redis-service.yaml
+- ingress.yaml
+

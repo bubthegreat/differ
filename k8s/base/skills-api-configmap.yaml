@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: differ-api-config
+data:
+  PYTHONPATH: "/app/src"
+  CORS_ORIGINS: "http://app.localhost"
+  REDIS_HOST: "differ-redis"
+  REDIS_PORT: "6379"

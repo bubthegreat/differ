@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: differ-ui
+spec:
+  template:
+    spec:
+      containers:
+        - name: differ-ui
+          image: differ-ui
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4200
+          env:
+            - name: NODE_ENV
+              value: "development"
+            - name: CHOKIDAR_USEPOLLING
+              value: "true"
+            - name: WATCHPACK_POLLING
+              value: "true"

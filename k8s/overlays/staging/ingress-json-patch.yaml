@@ -1,0 +1,12 @@
+- op: replace
+  path: /spec/rules/0/host
+  value: staging-skillmatrix.bubtaylor.com
+- op: add
+  path: /metadata/annotations/cert-manager.io~1cluster-issuer
+  value: letsencrypt-prod
+- op: add
+  path: /spec/tls
+  value:
+    - hosts:
+      - staging-skillmatrix.bubtaylor.com
+      secretName: differ-staging-tls

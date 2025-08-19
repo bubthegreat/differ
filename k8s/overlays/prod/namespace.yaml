@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: differ-prod
+  labels:
+    name: differ-prod
+    environment: production

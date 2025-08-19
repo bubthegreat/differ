@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: differ-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: differ-api
+  template:
+    metadata:
+      labels:
+        app: differ-api
+    spec:
+      containers:
+      - name: differ-api
+        image: differ-api:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DIFFER_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: differ-api-config
+              key: REDIS_HOST
+        envFrom:
+        - configMapRef:
+            name: differ-api-config
+        livenessProbe:
+          httpGet:
+            path: /api/
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
