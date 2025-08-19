@@ -43,8 +43,8 @@ jobs:
     - name: Build and push API image
       uses: docker/build-push-action@v5
       with:
-        context: ./api-differ
-        file: ./api-differ/Dockerfile
+        context: ./differ-api
+        file: ./differ-api/Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta-api.outputs.tags }}
         labels: ${{ steps.meta-api.outputs.labels }}
@@ -82,8 +82,8 @@ jobs:
     - name: Build and push UI image
       uses: docker/build-push-action@v5
       with:
-        context: ./app-differ
-        file: ./app-differ/Dockerfile
+        context: ./differ-app
+        file: ./differ-app/Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta-ui.outputs.tags }}
         labels: ${{ steps.meta-ui.outputs.labels }}
