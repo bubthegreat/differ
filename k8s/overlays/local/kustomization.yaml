@@ -3,13 +3,11 @@ kind: Kustomization
 
 resources:
 - ../../base
-- mysql-secret.yaml
 - namespace.yaml
 
 patchesStrategicMerge:
 - configmap-patch.yaml
-- storage-patch.yaml
 - differ-ui-patch.yaml
 - differ-ui-service-patch.yaml
 
-namespace: differ-local
+namespace: differ

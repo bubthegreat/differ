@@ -9,8 +9,8 @@ COPY . /api
 
 WORKDIR /api
 
-RUN uv sync --frozen --no-cache
+RUN uv pip install --system .
 
 EXPOSE 8000
 
-CMD ["/api/.venv/bin/differ_api"]
+CMD ["differ_api"]
