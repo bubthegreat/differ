@@ -10,7 +10,7 @@ spec:
           image: differ-ui
           imagePullPolicy: Never
           ports:
-            - containerPort: 4200
+            - containerPort: 80
           env:
             - name: NODE_ENV
               value: "development"

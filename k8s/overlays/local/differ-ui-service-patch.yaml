@@ -5,5 +5,5 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 4200
+    targetPort: 80
     name: http
