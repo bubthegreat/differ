@@ -1,20 +1,100 @@
-<mat-card>
-    <form [formGroup]="diffForm">
-            <mat-grid-list cols="2" rowHeight="500px">
-                    <mat-grid-tile>
-                        <mat-card>
-                            <mat-card-title>Before</mat-card-title>
-                            <textarea rows="10" matInput formControlName="left"></textarea>
-                        </mat-card>
-                    </mat-grid-tile>
-                    <mat-grid-tile>
-                        <mat-card>
-                            <mat-card-title>After</mat-card-title>
-                            <textarea rows="10" matInput formControlName="right"></textarea>
-                        </mat-card>
-                    </mat-grid-tile>
-            </mat-grid-list>
-            <button (click)="setDiff()">Save</button>
-        </form>
-        <pre semanticDiff [left]="left" [right]="right"></pre>
-</mat-card>
+<div class="differ-container">
+  <!-- Input Section -->
+  <mat-card class="input-card" elevation="2">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>edit</mat-icon>
+        Text Comparison
+      </mat-card-title>
+      <mat-card-subtitle>
+        Enter your text in both fields to see the differences
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="diffForm" class="diff-form">
+        <div class="input-grid">
+          <div class="input-section">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Before (Original Text)</mat-label>
+              <textarea
+                matInput
+                formControlName="left"
+                placeholder="Paste your original text here..."
+                rows="12"
+                class="text-input">
+              </textarea>
+              <mat-icon matSuffix>description</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="input-section">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>After (Modified Text)</mat-label>
+              <textarea
+                matInput
+                formControlName="right"
+                placeholder="Paste your modified text here..."
+                rows="12"
+                class="text-input">
+              </textarea>
+              <mat-icon matSuffix>description</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="setDiff()"
+            [disabled]="!diffForm.valid"
+            class="save-button">
+            <mat-icon>save</mat-icon>
+            Save Comparison
+          </button>
+
+          <button
+            mat-stroked-button
+            color="accent"
+            (click)="clearForm()"
+            type="button"
+            class="clear-button">
+            <mat-icon>clear</mat-icon>
+            Clear All
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Results Section -->
+  <mat-card class="results-card" elevation="2" *ngIf="left && right">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>compare</mat-icon>
+        Comparison Results
+      </mat-card-title>
+      <mat-card-subtitle>
+        Differences are highlighted below
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="diff-container">
+        <pre semanticDiff [left]="left" [right]="right" class="diff-output"></pre>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Empty State -->
+  <mat-card class="empty-state" elevation="1" *ngIf="!left && !right">
+    <mat-card-content>
+      <div class="empty-content">
+        <mat-icon class="empty-icon">compare_arrows</mat-icon>
+        <h3>Ready to Compare</h3>
+        <p>Enter text in both fields above to see the differences highlighted below.</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

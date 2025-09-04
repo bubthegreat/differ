@@ -74,4 +74,10 @@ export class DifferComponent implements OnInit {
       });
   }
 
+  clearForm(): void {
+    this.diffForm.reset();
+    this.left = '';
+    this.right = '';
+  }
+
 }
