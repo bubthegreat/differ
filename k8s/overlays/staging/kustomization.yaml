@@ -6,6 +6,7 @@ namespace: differ-staging
 resources:
   - ../../base
   - namespace.yaml
+  - httproute.yaml
 
 patchesStrategicMerge:
   - configmap-patch.yaml
