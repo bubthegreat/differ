@@ -15,7 +15,14 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /
+            value: /api
       backendRefs:
         - name: differ-api
+          port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: differ-ui
           port: 80
