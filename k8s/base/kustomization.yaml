@@ -9,5 +9,4 @@ resources:
 - differ-ui-service.yaml
 - redis-deployment.yaml
 - redis-service.yaml
-- ingress.yaml
 
